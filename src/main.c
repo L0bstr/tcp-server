@@ -109,9 +109,9 @@ int main(int argc, char *argv[]) {
       const char *response =
          "HTTP/1.1 200 OK\r\n"
          "Content-Type: text/plain\r\n"
-         "Content-Length: 31\r\n"
+         "Content-Length: 32\r\n"
          "\r\n"
-         "Hello, from the Lobster server!";
+         "Hello, from the Lobster server!\n";
 
       // Send response to client
       if (send(client_socket, response, strlen(response), 0) == -1) {
