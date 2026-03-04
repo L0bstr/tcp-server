@@ -28,3 +28,23 @@ Useful resources:
 6. `read` client message.
 7. `send` response.
 8. `close` the client and finally the server socket.
+
+## How to run
+### Without docker
+```bash
+make
+./build/server --port 3000
+```
+
+in another terminal:
+
+```bash
+curl http://localhost:3000
+```
+
+### With docker
+```bash
+docker build -t "tcp-server" .
+docker run --rm -d --name tcp-server -p 3000:3000 tcp-server:latest
+curl http://localhost:3000
+```
