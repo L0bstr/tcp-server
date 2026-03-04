@@ -19,7 +19,7 @@ void print_help() {
 }
 
 int main(int argc, char *argv[]) {
-   const char *SERVER_IP = "127.0.0.1";
+   const char *SERVER_IP = "0.0.0.0";
    char *port_arg = 0;
 
    for (int i = 1; i < argc; i++) {

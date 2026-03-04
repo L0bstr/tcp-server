@@ -2,6 +2,7 @@ CC = gcc
 CFLAGS = -I./include
 
 all:
+	mkdir -p build
 	$(CC) $(CFLAGS) -o ./build/server src/main.c src/lib.c
 
 bear:
