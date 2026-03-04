@@ -1,8 +1,12 @@
 #include <stdio.h>
+#include <string.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include <arpa/inet.h>
+#include <errno.h>
 #include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#include <tcp-server/lib.h>
 
 void print_help() {
    printf("server is a minmal tcp server made in c.\n");
@@ -72,7 +76,56 @@ int main(int argc, char *argv[]) {
       close(server_socket);
       exit(EXIT_FAILURE);
    }
-   printf("Listening on http://%s:%d\n", SERVER_IP, SERVER_PORT);
+
+   // prepare client data
+   int client_socket;
+   struct sockaddr_in client_address;
+   socklen_t client_address_length = sizeof(client_address);
+
+   while (1) {
+      printf("Listening on http://%s:%d\n", SERVER_IP, SERVER_PORT);
+
+      // Accept connection
+      client_socket = accept(server_socket, (struct sockaddr*)&client_address, &client_address_length);
+      if (client_socket == -1) {
+         perror("Failed to accpet client connection");
+         close(client_socket);
+         close(server_socket);
+         exit(EXIT_FAILURE);
+      }
+
+      // Get client info
+      char *client_ip = inet_ntoa(client_address.sin_addr);
+      int client_port = ntohs(client_address.sin_port);
+      printf("-> Client connected: %s:%d\n", client_ip, client_port);
+
+      // Read client message
+      char *message;
+      ssize_t message_size;
+      my_read(client_socket, &message, &message_size, "\r\n\r\n");
+      printf("-> Message:\n");
+      printf("%s", message);
+
+      const char *response =
+         "HTTP/1.1 200 OK\r\n"
+         "Content-Type: text/plain\r\n"
+         "Content-Length: 31\r\n"
+         "\r\n"
+         "Hello, from the Lobster server!";
+
+      // Send response to client
+      if (send(client_socket, response, strlen(response), 0) == -1) {
+         perror("Failed to send response to client");
+         close(client_socket);
+         close(server_socket);
+         exit(EXIT_FAILURE);
+      }
+      printf("-> Message sent to client\n");
+
+      close(client_socket);
+      printf("-> Client connection closed\n");
+      printf("---------------------------\n");
+   }
 
    close(server_socket);
    return 0;
