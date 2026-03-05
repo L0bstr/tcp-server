@@ -1,6 +1,6 @@
 # Tcp server
 
-Simple tcp server in C.
+The core understaning of how a tcp server works in c.
 
 ## Server workflow
 
@@ -29,22 +29,22 @@ Useful resources:
 7. `send` response.
 8. `close` the client and finally the server socket.
 
-## How to run
-### Without docker
+> [!NOTE]
+> Start the server and test it on [http://127.0.0.1:3000](http://127.0.0.1:3000)
+
+## Build and Run
 ```bash
 make
 ./build/server --port 3000
 ```
 
-in another terminal:
-
-```bash
-curl http://localhost:3000
-```
-
-### With docker
+## Dockerize
+### Build
 ```bash
 docker build -t "tcp-server" .
+```
+
+### Run
+```bash
 docker run --rm -d --name tcp-server -p 3000:3000 tcp-server:latest
-curl http://localhost:3000
 ```
