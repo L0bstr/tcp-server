@@ -2,6 +2,11 @@
 
 The core understaning of how a tcp server works in c.
 
+- [x] Basic server setup.
+- [ ] Multiplexing implementation with `select`.
+- [ ] Multiplexing implementation with `poll`.
+- [ ] Multiplexing implementation with `epoll`.
+
 ## Server workflow
 
 Useful resources:
@@ -47,4 +52,9 @@ docker build -t "tcp-server" .
 ### Run
 ```bash
 docker run --rm -d --name tcp-server -p 3000:3000 tcp-server:latest
+```
+
+### Stop
+```bash
+docker stop tcp-server
 ```
