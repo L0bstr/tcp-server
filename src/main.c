@@ -8,6 +8,8 @@
 #include <arpa/inet.h>
 #include <tcp-server/lib.h>
 
+#define SERVER_IP "0.0.0.0"
+
 void print_help() {
    printf("server is a minmal tcp server made in c.\n");
    printf("Usage: server --port <PORT>\n\n");
@@ -19,7 +21,6 @@ void print_help() {
 }
 
 int main(int argc, char *argv[]) {
-   const char *SERVER_IP = "0.0.0.0";
    char *port_arg = 0;
 
    for (int i = 1; i < argc; i++) {
