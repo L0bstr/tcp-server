@@ -41,9 +41,17 @@ Useful resources:
 7. `send` response
 8. `close` the client and finally the server `socket`
 
-## Build and run
+> [!TIP]
+> Start the server with
+> - `--ip 127.0.0.1` to accept connections from localhost only
+> - `--ip 0.0.0.0` to accept connections from any interface (LAN + internet)
+> - `--ip 192.168.1.100` to bind to a specific network interface (e.g. LAN only, replace with your machine's actual IP)
+> <br>
+> Run the server with ip that includes localhost and open [localhost:3000](https://127.0.0.1:3000)
+
+## Build and Run
 ```bash
 cmake -B build
 cmake --build build
-./build/tcp-server --help
+./build/tcp-server --ip 127.0.0.1 --port 3000
 ```
