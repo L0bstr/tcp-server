@@ -40,3 +40,10 @@ Useful resources:
 6. `recv` client request
 7. `send` response
 8. `close` the client and finally the server `socket`
+
+## Build and run
+```bash
+cmake -B build
+cmake --build build
+./build/tcp-server
+```
