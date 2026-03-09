@@ -45,5 +45,5 @@ Useful resources:
 ```bash
 cmake -B build
 cmake --build build
-./build/tcp-server
+./build/tcp-server --help
 ```
