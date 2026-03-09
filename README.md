@@ -6,6 +6,7 @@ An evolving TCP server in C.
 
 ## Dependencies
 - C compiler
+- Build system (recommended: make)
 - [CMake](https://cmake.org/)
 
 ---
@@ -49,9 +50,29 @@ Useful resources:
 > <br>
 > Run the server with ip that includes localhost and open [localhost:3000](https://127.0.0.1:3000)
 
+---
+
 ## Build and Run
 ```bash
 cmake -B build
 cmake --build build
 ./build/tcp-server --ip 127.0.0.1 --port 3000
+```
+
+---
+
+## Dockerize
+### Build
+```bash
+docker build -t "tcp-server" .
+```
+
+### Run
+```bash
+docker run --rm -d --name tcp-server -p 3000:3000 tcp-server:latest
+```
+
+### Stop
+```bash
+docker stop tcp-server
 ```
