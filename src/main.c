@@ -106,18 +106,47 @@ int main(int argc, char *argv[]) {
    printf("-> Client connected: %s:%d\n", client_ip, client_port);
 
    // Receive request
-   char buffer[1024];
-   ssize_t bytes_read = recv(client_socket, buffer, sizeof(buffer) - 1, 0);
-   if (bytes_read < 0) {
-      perror("Failed to read client request");
-      close(client_socket);
-      close(server_socket);
-      exit(EXIT_FAILURE);
-   } else if (bytes_read == 0) printf("-> Client disconnected\n");
-   else {
-      buffer[bytes_read] = '\0';
-      printf("-> Request:\n%s\n", buffer);
+   ssize_t request_size = 1024;
+   int request_length = 0;
+   char *request = malloc(request_size);
+   memset(request, 0, request_size);
+
+   // Run until request have a valid end
+   while (strstr(request, "\r\n\r\n") == NULL) {
+      char chunk[1024];
+      ssize_t bytes_read = recv(client_socket, chunk, sizeof(chunk) - 1, 0);
+      if (bytes_read < 0) {
+         perror("Failed to read client request");
+         close(client_socket);
+         close(server_socket);
+         free(request);
+         exit(EXIT_FAILURE);
+      } else if (bytes_read == 0) {
+         printf("-> Client disconnected\n");
+         break;
+      }
+
+      ssize_t new_request_size = request_length + bytes_read + 1;
+      if (new_request_size > request_size) {
+         char *tmp = realloc(request, new_request_size);
+         if (!tmp) {
+            perror("Failed to resize request buffer");
+            close(client_socket);
+            close(server_socket);
+            free(request);
+            exit(EXIT_FAILURE);
+         }
+         request = tmp;
+         request_size = new_request_size;
+      }
+
+      chunk[bytes_read] = '\0';
+      memcpy(request + request_length, chunk, bytes_read + 1);
+      request_length += bytes_read;
    }
+
+   printf("-> Request:\n%s", request);
+   free(request);
 
    // Send response
    const char *response = 
