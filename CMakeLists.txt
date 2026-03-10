@@ -5,5 +5,9 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_C_STANDARD 11)
 
 file(GLOB SRC "src/*.c")
-add_executable(${PROJECT_NAME} ${SRC})
+add_executable(${PROJECT_NAME} 
+   ${SRC}
+   "vendor/picohttpparser/picohttpparser.c"
+)
 target_include_directories(${PROJECT_NAME} PRIVATE "include/")
+target_include_directories(${PROJECT_NAME} PRIVATE "vendor/")

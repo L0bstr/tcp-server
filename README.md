@@ -14,6 +14,11 @@ An evolving TCP server in C.
 
 ---
 
+## Vendor
+- [picohttpparser](https://github.com/h2o/picohttpparser)
+
+---
+
 ## Planned
 - [ ] Core
 - [ ] HTTP parsing
