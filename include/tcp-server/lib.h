@@ -7,6 +7,11 @@
 #include <sys/socket.h>
 
 /*
+ * Prints out manual for the tcp-server program.
+*/
+void print_help(const char* program_name);
+
+/*
  * Receives data from a socket until a terminator sequence is found.
  * Returns the length of data in buffer, or -1 on error (errno set).
 */

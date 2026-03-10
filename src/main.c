@@ -8,33 +8,12 @@
 #include <unistd.h>
 #include <tcp-server/lib.h>
 
-#define PROGRAM_NAME "tcp-server"
-
 #define PROTOCOL_RAW 1
 #define PROTOCOL_HTTP 2
 
-void print_help() {
-   printf("%s is an evolving TCP server written in C.\n", PROGRAM_NAME);
-   printf("\n");
-   printf("Usage: %s --ip <IP> --port <PORT> [OPTIONS]...\n", PROGRAM_NAME);
-   printf("\n");
-   printf("Arguments:\n");
-   printf("\t<IP> - IPv4 address owned by the host\n");
-   printf("\t<PORT> - port number [1-65535]\n");
-   printf("\t<PROTOCOL> - protocol that the server supports for communication [raw/http(default)]\n");
-   printf("\n");
-   printf("Options:\n");
-   printf("\t--help\t\t\tPrints this message\n");
-   printf("\t--ip <IP>\t\tNetwork interface address to listen on\n");
-   printf("\t--port <PORT>\t\tA port number on which the server should listen\n");
-   printf("\t--protocol <PROTOCOL>\tA protocol that the server will use to parse request and send response\n");
-   printf("\n");
-   printf("PROTOCOL\n");
-   printf("raw: Read and respond with raw TCP messages.\n");
-   printf("     Messages must be terminated with '\\r\\n'.\n");
-}
-
 int main(int argc, char *argv[]) {
+   const char* const PROGRAM_NAME = strrchr(argv[0], '/') + 1;
+
    char *ip_arg = NULL;
    char *port_arg = NULL;
    char *protocol_arg = NULL;
@@ -42,7 +21,7 @@ int main(int argc, char *argv[]) {
    for (int i = 1; i < argc; i++) {
       char *curr = argv[i];
       if (strcmp(curr, "--help") == 0) {
-         print_help();
+         print_help(PROGRAM_NAME);
          exit(EXIT_SUCCESS);
       }
       else if (strcmp(curr, "--ip") == 0 && i + 1 < argc) ip_arg = argv[++i];
@@ -163,3 +142,4 @@ int main(int argc, char *argv[]) {
 
    return EXIT_SUCCESS;
 }
+

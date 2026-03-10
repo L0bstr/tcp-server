@@ -1,5 +1,26 @@
 #include <tcp-server/lib.h>
 
+void print_help(const char *program_name) {
+   printf("%s is an evolving TCP server written in C.\n", program_name);
+   printf("\n");
+   printf("Usage: %s --ip <IP> --port <PORT> [OPTIONS]...\n", program_name);
+   printf("\n");
+   printf("Arguments:\n");
+   printf("\t<IP> - IPv4 address owned by the host\n");
+   printf("\t<PORT> - port number [1-65535]\n");
+   printf("\t<PROTOCOL> - protocol that the server supports for communication [raw/http(default)]\n");
+   printf("\n");
+   printf("Options:\n");
+   printf("\t--help\t\t\tPrints this message\n");
+   printf("\t--ip <IP>\t\tNetwork interface address to listen on\n");
+   printf("\t--port <PORT>\t\tA port number on which the server should listen\n");
+   printf("\t--protocol <PROTOCOL>\tA protocol that the server will use to parse request and send response\n");
+   printf("\n");
+   printf("PROTOCOL\n");
+   printf("raw: Read and respond with raw TCP messages.\n");
+   printf("     Messages must be terminated with '\\r\\n'.\n");
+}
+
 ssize_t recv_until(int socket, char **buffer, int recv_flags, const char *terminator) {
    ssize_t terminator_length = strlen(terminator);
    ssize_t buffer_size = 1024;
