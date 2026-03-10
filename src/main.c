@@ -9,21 +9,34 @@
 
 #define PROGRAM_NAME "tcp-server"
 
+#define PROTOCOL_RAW 1
+#define PROTOCOL_HTTP 2
+
 void print_help() {
    printf("%s is an evolving TCP server written in C.\n", PROGRAM_NAME);
-   printf("Usage: %s --ip 127.0.0.1 --port 3000\n\n", PROGRAM_NAME);
+   printf("\n");
+   printf("Usage: %s --ip <IP> --port <PORT> [OPTIONS]...\n", PROGRAM_NAME);
+   printf("\n");
    printf("Arguments:\n");
-   printf("\t<IP> - ip address owned by the host\n");
+   printf("\t<IP> - IPv4 address owned by the host\n");
    printf("\t<PORT> - port number [1-65535]\n");
-   printf("\nOptions:\n");
-   printf("\t--help\t\tPrints this message\n");
-   printf("\t--ip <IP>\tNetwork interface address to listen on\n");
-   printf("\t--port <PORT>\tA port number on which the server should listen\n");
+   printf("\t<PROTOCOL> - protocol that the server supports for communication [raw/http(default)]\n");
+   printf("\n");
+   printf("Options:\n");
+   printf("\t--help\t\t\tPrints this message\n");
+   printf("\t--ip <IP>\t\tNetwork interface address to listen on\n");
+   printf("\t--port <PORT>\t\tA port number on which the server should listen\n");
+   printf("\t--protocol <PROTOCOL>\tA protocol that the server will use to parse request and send response\n");
+   printf("\n");
+   printf("PROTOCOL\n");
+   printf("raw: Read and respond with raw TCP messages.\n");
+   printf("     Messages must be terminated with '\\r\\n'.\n");
 }
 
 int main(int argc, char *argv[]) {
    char *ip_arg = NULL;
    char *port_arg = NULL;
+   char *protocol_arg = NULL;
 
    for (int i = 1; i < argc; i++) {
       char *curr = argv[i];
@@ -33,6 +46,12 @@ int main(int argc, char *argv[]) {
       }
       else if (strcmp(curr, "--ip") == 0 && i + 1 < argc) ip_arg = argv[++i];
       else if (strcmp(curr, "--port") == 0 && i + 1 < argc) port_arg = argv[++i];
+      else if (strcmp(curr, "--protocol") == 0 && i + 1 < argc) protocol_arg = argv[++i];
+      else if (curr[0] == '-') {
+         fprintf(stderr, "Invalid option: '%s'\n", curr);
+         fprintf(stderr, "Try '%s --help'\n", PROGRAM_NAME);
+         exit(EXIT_FAILURE);
+      }
    }
 
    if (ip_arg == NULL || port_arg == NULL) {
@@ -52,6 +71,10 @@ int main(int argc, char *argv[]) {
       fprintf(stderr, "Try '%s --help'\n", PROGRAM_NAME);
       exit(EXIT_FAILURE);
    }
+
+   int protocol = 0;
+   if (protocol_arg == NULL || strcmp(protocol_arg, "http")) protocol = PROTOCOL_HTTP;
+   else if (strcmp(protocol_arg, "raw")) protocol = PROTOCOL_RAW;
 
    // Create server address
    struct sockaddr_in server_address;
