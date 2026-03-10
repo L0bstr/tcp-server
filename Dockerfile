@@ -1,11 +1,12 @@
 FROM alpine:latest
 RUN apk add --no-cache musl-dev gcc make cmake
 
-WORKDIR /server/
+WORKDIR /app/
 
 COPY src/ ./src/
 COPY include/ ./include/
 COPY ./CMakeLists.txt ./
+COPY vendor/ ./vendor/
 
 RUN cmake -B build && cmake --build build
 

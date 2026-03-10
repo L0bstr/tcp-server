@@ -53,8 +53,13 @@ int main(int argc, char *argv[]) {
    }
 
    int protocol = 0;
-   if (protocol_arg == NULL || strcmp(protocol_arg, "http")) protocol = PROTOCOL_HTTP;
-   else if (strcmp(protocol_arg, "raw")) protocol = PROTOCOL_RAW;
+   if (protocol_arg == NULL || strcmp(protocol_arg, "http") == 0) protocol = PROTOCOL_HTTP;
+   else if (strcmp(protocol_arg, "raw") == 0) protocol = PROTOCOL_RAW;
+   else {
+      fprintf(stderr, "Invalid <PROTOCOL>\n");
+      fprintf(stderr, "Try '%s --help'\n", PROGRAM_NAME);
+      exit(EXIT_FAILURE);
+   }
 
    // Create server address
    struct sockaddr_in server_address;
